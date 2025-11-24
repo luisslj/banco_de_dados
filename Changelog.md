@@ -13,3 +13,15 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
 - Documentação inicial (`README.md`).
 
 
+## [0.2.0] - 2025-11-24
+### Adicionado
+- Modelagem de Banco de Dados - Experiencia Pratica 1 
+- Modelagem de Banco de Dados - Experiencia Pratica 2
+- Modelagem de Banco de Dados - Experiencia Pratica 3
+
+## [0.3.0] - 2025-11-24
+### Adicionado
+- Modelagem de Banco de Dados - Experiencia Pratica 1 
+- Modelagem de Banco de Dados - Experiencia Pratica 2
+- Modelagem de Banco de Dados - Experiencia Pratica 3
+
