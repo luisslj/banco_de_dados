@@ -1,0 +1,6 @@
+INSERT INTO Agencia (agencia_id, nome, endereco) VALUES
+(1, 'Agência Central', 'Av. Paulista, 1000 - São Paulo'),
+(2, 'Agência Norte', 'Rua das Palmeiras, 200 - Manaus'),
+(3, 'Agência Sul', 'Av. das Nações, 300 - Porto Alegre'),
+(4, 'Agência Leste', 'Rua do Comércio, 400 - Recife'),
+(5, 'Agência Oeste', 'Av. Brasil, 500 - Rio de Janeiro');

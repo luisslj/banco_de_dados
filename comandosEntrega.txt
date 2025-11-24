@@ -1,0 +1,96 @@
+🧾 1. Comandos INSERT para povoar as tabelas principais
+
+-- Inserir uma agência
+INSERT INTO Agencia (nome, endereco) VALUES
+('Agência Central', 'Av. Principal, 100 - São Paulo'),
+('Agência Norte', 'Rua das Palmeiras, 200 - Manaus'),
+('Agência Sul', 'Av. das Nações, 300 - Porto Alegre');
+
+-- Inserir alguns clientes
+INSERT INTO Cliente (nome, cpf, data_nascimento, endereco) VALUES
+('João Silva', '12345678901', '1980-05-15', 'Rua A, 123 - São Paulo'),
+('Maria Oliveira', '23456789012', '1990-08-22', 'Rua B, 456 - Rio de Janeiro'),
+('Carlos Souza', '34567890123', '1985-12-01', 'Rua C, 789 - Belo Horizonte');
+
+-- Inserir contas
+INSERT INTO Conta (numero, tipo, saldo, cliente_id, agencia_id) VALUES
+('0001', 'corrente', 5000.00, 1, 1),
+('0002', 'poupança', 3000.00, 2, 2),
+('0003', 'corrente', 7000.00, 3, 3);
+
+-- Inserir cartões de crédito
+INSERT INTO CartaoCredito (numero_cartao, nome_impresso, validade, cvv, limite_credito, saldo_disponivel, status, conta_id) VALUES
+('4111111111111111', 'João Silva', '2027-12-01', '123', 10000.00, 9800.00, 'ativo', 1),
+('4111111111112222', 'Maria Oliveira', '2026-06-01', '456', 8000.00, 7900.00, 'ativo', 2);
+
+-- Inserir empréstimos
+INSERT INTO Emprestimo (conta_id, valor_emprestado, taxa_juros, data_contratacao, data_vencimento, status) VALUES
+(1, 15000.00, 2.5, '2025-01-01', '2026-01-01', 'ativo'),
+(2, 10000.00, 3.0, '2025-02-01', '2026-02-01', 'ativo');
+
+-- Inserir investimentos
+INSERT INTO Investimento (conta_id, tipo_investimento, valor_aplicado, data_aplicacao, rendimento, data_resgate, status) VALUES
+(1, 'CDB', 5000.00, '2025-03-01', 6.5, '2026-03-01', 'ativo'),
+(3, 'Tesouro Direto', 7000.00, '2025-04-01', 7.2, '2026-04-01', 'ativo');
+
+
+2. Consultas SELECT com filtros e junções
+
+-- 1. Selecionar clientes com saldo acima de 4000
+SELECT c.nome, ct.saldo
+FROM Cliente c
+JOIN Conta ct ON c.cliente_id = ct.cliente_id
+WHERE ct.saldo > 4000;
+
+-- 2. Listar os cartões de crédito ativos ordenados pelo limite
+SELECT nome_impresso, numero_cartao, limite_credito
+FROM CartaoCredito
+WHERE status = 'ativo'
+ORDER BY limite_credito DESC;
+
+-- 3. Mostrar os empréstimos com vencimento até o final de 2025
+SELECT emprestimo_id, valor_emprestado, data_vencimento
+FROM Emprestimo
+WHERE data_vencimento <= '2025-12-31';
+
+-- 4. Listar os investimentos com rendimento acima de 7%
+SELECT tipo_investimento, valor_aplicado, rendimento
+FROM Investimento
+WHERE rendimento > 7.0;
+
+-- 5. Mostrar nome do cliente, número da conta e agência
+SELECT cl.nome, ct.numero, ag.nome AS agencia
+FROM Cliente cl
+JOIN Conta ct ON cl.cliente_id = ct.cliente_id
+JOIN Agencia ag ON ct.agencia_id = ag.agencia_id
+LIMIT 10;
+
+
+3.Comandos UPDATE com condições
+
+-- Atualizar saldo da conta 0001
+UPDATE Conta SET saldo = saldo + 1000 WHERE numero = '0001';
+
+-- Atualizar status do cartão de Maria para bloqueado
+UPDATE CartaoCredito SET status = 'bloqueado' WHERE conta_id = 2;
+
+-- Atualizar rendimento do investimento de João
+UPDATE Investimento SET rendimento = 7.0 WHERE conta_id = 1;
+
+
+
+
+4. Comandos DELETE com condições
+
+-- Excluir cliente com CPF duplicado (exemplo fictício)
+DELETE FROM Cliente WHERE cpf = '99999999999';
+
+-- Excluir empréstimos já quitados
+DELETE FROM Emprestimo WHERE status = 'quitado';
+
+-- Excluir cartões vencidos
+DELETE FROM CartaoCredito WHERE validade < CURDATE();
+
+
+
+

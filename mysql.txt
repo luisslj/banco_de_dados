@@ -1,0 +1,186 @@
+-- Tabela: Cliente
+CREATE TABLE Cliente (
+    cliente_id INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    cpf VARCHAR(11) UNIQUE NOT NULL,
+    data_nascimento DATE,
+    endereco TEXT
+);
+
+-- Tabela: Agência
+CREATE TABLE Agencia (
+    agencia_id INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    endereco TEXT
+);
+
+-- Tabela: Funcionário
+CREATE TABLE Funcionario (
+    funcionario_id INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    cargo VARCHAR(50),
+    agencia_id INT,
+    FOREIGN KEY (agencia_id) REFERENCES Agencia(agencia_id)
+);
+
+-- Tabela: Conta
+CREATE TABLE Conta (
+    conta_id INT AUTO_INCREMENT PRIMARY KEY,
+    numero VARCHAR(20) UNIQUE NOT NULL,
+    tipo VARCHAR(20),
+    saldo DECIMAL(10,2) DEFAULT 0.00,
+    cliente_id INT,
+    agencia_id INT,
+    FOREIGN KEY (cliente_id) REFERENCES Cliente(cliente_id),
+    FOREIGN KEY (agencia_id) REFERENCES Agencia(agencia_id)
+);
+
+-- Tabela: Transação
+CREATE TABLE Transacao (
+    transacao_id INT AUTO_INCREMENT PRIMARY KEY,
+    conta_id INT,
+    tipo VARCHAR(20),
+    valor DECIMAL(10,2),
+    data_hora DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (conta_id) REFERENCES Conta(conta_id)
+);
+
+-- Tabela: Cartão de Crédito
+CREATE TABLE CartaoCredito (
+    cartao_id INT AUTO_INCREMENT PRIMARY KEY,
+    numero_cartao VARCHAR(16) UNIQUE NOT NULL,
+    nome_impresso VARCHAR(100),
+    validade DATE,
+    cvv VARCHAR(4),
+    limite_credito DECIMAL(10,2),
+    saldo_disponivel DECIMAL(10,2),
+    status VARCHAR(20),
+    conta_id INT,
+    FOREIGN KEY (conta_id) REFERENCES Conta(conta_id)
+);
+
+-- Tabela: Empréstimo
+CREATE TABLE Emprestimo (
+    emprestimo_id INT AUTO_INCREMENT PRIMARY KEY,
+    conta_id INT,
+    valor_emprestado DECIMAL(10,2),
+    taxa_juros DECIMAL(5,2),
+    data_contratacao DATE,
+    data_vencimento DATE,
+    status VARCHAR(20),
+    FOREIGN KEY (conta_id) REFERENCES Conta(conta_id)
+);
+
+-- Tabela: Investimento
+CREATE TABLE Investimento (
+    investimento_id INT AUTO_INCREMENT PRIMARY KEY,
+    conta_id INT,
+    tipo_investimento VARCHAR(50),
+    valor_aplicado DECIMAL(10,2),
+    data_aplicacao DATE,
+    rendimento DECIMAL(5,2),
+    data_resgate DATE,
+    status VARCHAR(20),
+    FOREIGN KEY (conta_id) REFERENCES Conta(conta_id)
+);
+
+
+
+
+
+
+
+
+teste2
+
+
+-- Seleciona ou cria o banco de dados
+CREATE DATABASE IF NOT EXISTS banco_digital;
+USE banco_digital;
+
+-- Tabela Cliente
+CREATE TABLE Cliente (
+  cliente_id INT PRIMARY KEY,
+  nome VARCHAR(100) NOT NULL,
+  cpf VARCHAR(11) NOT NULL UNIQUE,
+  data_nascimento DATE NOT NULL,
+  endereco VARCHAR(200)
+);
+
+-- Tabela Agencia
+CREATE TABLE Agencia (
+  agencia_id INT PRIMARY KEY,
+  nome VARCHAR(100) NOT NULL,
+  endereco VARCHAR(200)
+);
+
+-- Tabela Funcionario
+CREATE TABLE Funcionario (
+  funcionario_id INT PRIMARY KEY,
+  nome VARCHAR(100) NOT NULL,
+  cargo VARCHAR(50),
+  salario DECIMAL(10,2),
+  agencia_id INT,
+  FOREIGN KEY (agencia_id) REFERENCES Agencia(agencia_id)
+);
+
+-- Tabela Conta
+CREATE TABLE Conta (
+  conta_id INT PRIMARY KEY,
+  numero VARCHAR(20) NOT NULL UNIQUE,
+  tipo ENUM('corrente', 'poupança') NOT NULL,
+  saldo DECIMAL(12,2) DEFAULT 0.00,
+  cliente_id INT,
+  agencia_id INT,
+  FOREIGN KEY (cliente_id) REFERENCES Cliente(cliente_id),
+  FOREIGN KEY (agencia_id) REFERENCES Agencia(agencia_id)
+);
+
+-- Tabela CartaoCredito
+CREATE TABLE CartaoCredito (
+  cartao_id INT PRIMARY KEY,
+  numero_cartao VARCHAR(20) NOT NULL UNIQUE,
+  nome_impresso VARCHAR(100),
+  validade DATE,
+  cvv VARCHAR(3),
+  limite_credito DECIMAL(10,2),
+  saldo_disponivel DECIMAL(10,2),
+  status ENUM('ativo', 'bloqueado', 'cancelado') DEFAULT 'ativo',
+  conta_id INT,
+  FOREIGN KEY (conta_id) REFERENCES Conta(conta_id)
+);
+
+-- Tabela Transacao
+CREATE TABLE Transacao (
+  transacao_id INT PRIMARY KEY,
+  conta_id INT,
+  tipo ENUM('depósito', 'saque', 'transferência') NOT NULL,
+  valor DECIMAL(10,2),
+  data_hora DATETIME,
+  FOREIGN KEY (conta_id) REFERENCES Conta(conta_id)
+);
+
+-- Tabela Emprestimo
+CREATE TABLE Emprestimo (
+  emprestimo_id INT PRIMARY KEY,
+  conta_id INT,
+  valor_emprestado DECIMAL(12,2),
+  taxa_juros DECIMAL(5,2),
+  data_contratacao DATE,
+  data_vencimento DATE,
+  status ENUM('ativo', 'quitado', 'inadimplente') DEFAULT 'ativo',
+  FOREIGN KEY (conta_id) REFERENCES Conta(conta_id)
+);
+
+-- Tabela Investimento
+CREATE TABLE Investimento (
+  investimento_id INT PRIMARY KEY,
+  conta_id INT,
+  tipo_investimento VARCHAR(50),
+  valor_aplicado DECIMAL(12,2),
+  data_aplicacao DATE,
+  rendimento DECIMAL(5,2),
+  data_resgate DATE,
+  status ENUM('ativo', 'resgatado') DEFAULT 'ativo',
+  FOREIGN KEY (conta_id) REFERENCES Conta(conta_id)
+);
